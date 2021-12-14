@@ -11,6 +11,8 @@ Program::~Program()
 
 void Program::Init()
 {
+	std::cout << "Initialising" << std::endl;
+
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "SDL_Init failed", SDL_GetError(), NULL);
@@ -39,14 +41,16 @@ void Program::Init()
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "GLEW Failed to Initialise", SDL_GetError(), NULL);
 	}
 
+	std::cout << "Initialised" << std::endl;
 
 	running = true;
+	Update();
 }
 
 /*
 	Currently handles the main Loop for the Program
 */
-void Program::Loop()
+void Program::Update()
 {
 	while (running)
 	{
@@ -94,9 +98,11 @@ void Program::Render()
 
 void Program::CleanUp()
 {
+
 	SDL_GL_DeleteContext(glContext);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 
+	std::cout << "Clean Up" << std::endl;
 	return;
 }

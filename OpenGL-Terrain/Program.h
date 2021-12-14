@@ -11,21 +11,19 @@
 
 #pragma once
 
-
 class Program
 {
 public:
 	Program();
 	~Program();
 	
-	void Loop();
-
 private:
 	
 	void Init();
-	void CleanUp();
+	void Update();
 	void InputChecks();
 	void Render();
+	void CleanUp();
 
 
 	SDL_Window* window = nullptr;
@@ -34,4 +32,6 @@ private:
 
 	std::string windowName = "OpenGL Terrain";
 	bool running = false;
+
 };
+
