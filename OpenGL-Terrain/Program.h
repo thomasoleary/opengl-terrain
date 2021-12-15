@@ -40,6 +40,8 @@ private:
 	void Render();
 	void CleanUp();
 
+	void WireFrameMode();
+
 	// Window related
 	SDL_Window* window = nullptr;
 	SDL_GLContext glContext = NULL;
@@ -58,6 +60,7 @@ private:
 
 	// Misc
 	bool running = false;
+	bool isWireFrameToggled = false;
 	int numberOfIndicies = 0;
 
 

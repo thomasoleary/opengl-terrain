@@ -78,6 +78,14 @@ void Program::InputChecks()
 			camera.GetMouseInput(rotation.x, rotation.y);
 			break;
 		}
+		case SDL_KEYUP:
+			switch (event.key.keysym.sym)
+			{
+			case SDLK_e:
+				isWireFrameToggled = !isWireFrameToggled;
+				WireFrameMode();
+				break;
+			}
 
 		case SDL_KEYDOWN:
 			switch (event.key.keysym.sym)
@@ -121,8 +129,7 @@ void Program::Render()
 	glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(mvp));
 	glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(model));
 
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
+	
 	glDrawElements(GL_TRIANGLES, terrainGenerator.terrain.numberOfIndices, GL_UNSIGNED_SHORT, (void*)0);
 
 	SDL_GL_SwapWindow(window);
@@ -139,4 +146,16 @@ void Program::CleanUp()
 
 	std::cout << "Program Clean Up" << std::endl;
 	return;
+}
+
+void Program::WireFrameMode()
+{
+	if (isWireFrameToggled)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 }
