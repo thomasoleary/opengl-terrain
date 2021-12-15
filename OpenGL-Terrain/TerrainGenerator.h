@@ -5,15 +5,25 @@
 #include <GL/glew.h>
 
 #include "Terrain.h"
+#include "TerrainType.h"
 
 class TerrainGenerator
 {
 public:
+	~TerrainGenerator();
+
 	Terrain terrain = Terrain();
 
 	int Dimension = 10;
 
 	void GenerateTerrain(int dimension);
+	void TerrainManager();
+
+	GLuint vertexBufferID;
+	GLuint indexArrayBufferID;
+
+	GLuint vertexArrayID;
+	GLuint vertexByteSize = sizeof(Vertex);
 
 private:
 	void GenerateVertices(int dimension);

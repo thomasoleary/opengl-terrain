@@ -22,6 +22,8 @@ public:
 		delete[] indices;
 		numberOfVertices = 0;
 		numberOfIndices = 0;
+
+		std::cout << "Terrain Destroyed" << std::endl;
 	}
 
 	Vertex* vertices;

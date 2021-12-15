@@ -1,11 +1,30 @@
 #include "TerrainGenerator.h"
 
+TerrainGenerator::~TerrainGenerator()
+{
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+
+	glDeleteBuffers(1, &vertexBufferID);
+	glDeleteBuffers(1, &indexArrayBufferID);
+	glDeleteVertexArrays(1, &vertexArrayID);
+	std::cout << "TerrainGenerator Destroyed" << std::endl;
+}
+
 void TerrainGenerator::GenerateTerrain(int dimension)
 {
+	std::cout << "Vertex Byte Size: " << vertexByteSize << std::endl;
+
+	std::cout << "\nTerrain Generating" << std::endl;
+	dimension++;
 	Dimension = dimension;
 	GenerateVertices(Dimension);
 	GenerateIndices(Dimension);
+
+	TerrainManager();
+	std::cout << "Terrain Generated\n" << std::endl;
 }
+
 
 void TerrainGenerator::GenerateVertices(int dimension)
 {
@@ -14,7 +33,7 @@ void TerrainGenerator::GenerateVertices(int dimension)
 
 	int halfDimension = dimension / 2;
 
-	terrain.vertices = new Vertex[terrain.numberOfVertices];
+	terrain.vertices = new Vertex[terrain.numberOfVertices]();
 
 	for (int i = 0; i < dimension; i++)
 	{
@@ -32,14 +51,16 @@ void TerrainGenerator::GenerateVertices(int dimension)
 
 		}
 	}
+	std::cout << "Terrain Vertices generated" << std::endl;
 }
+
 
 void TerrainGenerator::GenerateIndices(int dimension)
 {
 	terrain.numberOfIndices = (dimension - 1) * (dimension - 1) * 6;
 	std::cout << "Number of Indices: " << terrain.numberOfIndices << std::endl;
 
-	terrain.indices = new GLshort[terrain.numberOfIndices];
+	terrain.indices = new GLshort[terrain.numberOfIndices]();
 
 	int vertice = 0;
 
@@ -58,5 +79,25 @@ void TerrainGenerator::GenerateIndices(int dimension)
 			terrain.indices[vertice++] = dimension * i + j + dimension + 1;
 		}
 	}
+	std::cout << "Terrain Indices generated" << std::endl;
 
+}
+
+void TerrainGenerator::TerrainManager()
+{
+	glGenVertexArrays(1, &vertexArrayID);
+	glBindVertexArray(vertexArrayID);
+
+	glGenBuffers(1, &vertexBufferID);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
+	glBufferData(GL_ARRAY_BUFFER, terrain.ReturnVerticeBufferSize(), terrain.vertices, GL_STATIC_DRAW);
+
+	glGenBuffers(1, &indexArrayBufferID);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexArrayBufferID);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, terrain.ReturnIndiceBufferSize(), terrain.indices, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexByteSize, (void*)0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexByteSize, (void*)(sizeof(float) * 3));
 }

@@ -5,7 +5,7 @@ int main(int argc, char ** argsv)
 {
 	Program program = Program();
 
-	//program.Loop();
+	program.Update();
 
 	return 0;
 }
