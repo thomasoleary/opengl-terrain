@@ -4,11 +4,16 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <GL/glew.h>
+
 
 class Camera
 {
 public:
+	void Update(GLuint programID);
+
 	void MoveForward();
 	void MoveBack();
 	void StrafeRight();
@@ -16,7 +21,13 @@ public:
 
 	void GetMouseInput(float rotX, float rotY);
 
-	glm::mat4 getWorldToView() const;
+	glm::mat4 GetWorldToView() const;
+
+	glm::mat4 mvp, view, projection;
+	glm::mat4 model = glm::mat4(1.0f);
+
+	GLuint mvpLocation;
+	GLuint projectionLocation;
 
 	glm::mat4 viewRotate;
 	glm::vec3 forward, strafe;

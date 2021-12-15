@@ -10,9 +10,22 @@ void Camera::GetMouseInput(float rotX, float rotY)
     strafe = glm::cross(forward, upVector);
 }
 
-glm::mat4 Camera::getWorldToView() const
+glm::mat4 Camera::GetWorldToView() const
 {
     return glm::lookAt(position, position + forward, upVector);
+}
+
+void Camera::Update(GLuint programID)
+{
+    view = GetWorldToView();
+    projection = glm::perspective(glm::radians(45.f), 4.0f / 3.0f, 0.1f, 1000.0f);
+    mvp = model * projection * view;
+
+    mvpLocation = glGetUniformLocation(programID, "model");
+    projectionLocation = glGetUniformLocation(programID, "projection");
+
+    glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(mvp));
+    glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(model));
 }
 
 void Camera::MoveForward()

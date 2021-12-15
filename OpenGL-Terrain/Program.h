@@ -10,7 +10,6 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 #include <fstream>
 #include <sstream>
@@ -49,12 +48,8 @@ private:
 
 	// Shader related
 	GLuint programID = NULL;
-	GLuint mvpLocation;
-	GLuint projectionLocation;
 
-	// Camera related
-	glm::mat4 mvp, view, projection;
-	glm::mat4 model = glm::mat4(1.0f);
+	// Mouse related
 	glm::vec3 rotation;
 	const float rotSpeed = 0.1f;
 

@@ -119,16 +119,7 @@ void Program::Render()
 
 	glUseProgram(programID);
 
-	view = camera.getWorldToView();
-	projection = glm::perspective(glm::radians(45.f), 4.0f / 3.0f, 0.1f, 1000.0f);
-	mvp = model * projection * view;
-
-	mvpLocation = glGetUniformLocation(programID, "model");
-	projectionLocation = glGetUniformLocation(programID, "projection");
-
-	glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(mvp));
-	glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(model));
-
+	camera.Update(programID);
 	
 	glDrawElements(GL_TRIANGLES, terrainGenerator.terrain.numberOfIndices, GL_UNSIGNED_SHORT, (void*)0);
 
