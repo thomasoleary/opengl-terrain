@@ -11,8 +11,6 @@ Program::~Program()
 
 void Program::Init()
 {
-	std::cout << "Initialising" << std::endl;
-
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "SDL_Init failed", SDL_GetError(), NULL);
@@ -42,17 +40,15 @@ void Program::Init()
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "GLEW Failed to Initialise", SDL_GetError(), NULL);
 	}
 
-	std::cout << "Initialised\n" << std::endl;
+	std::cout << "Program Initialised\n" << std::endl;
 
 	running = true;
 }
 
-/*
-	Currently handles the main Loop for the Program
-*/
 void Program::Update()
 {
 	terrainGenerator.GenerateTerrain(15);
+
 	programID = LoadShaders("VertexShader.glsl", "FragmentShader.glsl");
 
 	while (running)
@@ -62,9 +58,6 @@ void Program::Update()
 	}
 }
 
-/*
-	Currently checking for certain inputs made by the user (Quit, esc, F11)
-*/
 void Program::InputChecks()
 {
 	SDL_Event event;
@@ -97,6 +90,7 @@ void Program::InputChecks()
 				break;
 			case SDLK_s:
 				camera.MoveBack();
+				break;
 			case SDLK_a:
 				camera.StrafeRight();
 				break;
@@ -110,7 +104,7 @@ void Program::InputChecks()
 
 void Program::Render()
 {
-	glClearColor(1.0f, 0.5f, 0.5f, 0.0f);
+	glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glEnable(GL_DEPTH_TEST);
@@ -118,7 +112,7 @@ void Program::Render()
 	glUseProgram(programID);
 
 	view = camera.getWorldToView();
-	projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0 / 1.0f, 1000.0f);
+	projection = glm::perspective(glm::radians(45.f), 4.0f / 3.0f, 0.1f, 1000.0f);
 	mvp = model * projection * view;
 
 	mvpLocation = glGetUniformLocation(programID, "model");
@@ -129,7 +123,7 @@ void Program::Render()
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	glDrawElements(GL_TRIANGLES, terrainGenerator.terrain.numberOfIndices, GL_UNSIGNED_SHORT, 0);
+	glDrawElements(GL_TRIANGLES, terrainGenerator.terrain.numberOfIndices, GL_UNSIGNED_SHORT, (void*)0);
 
 	SDL_GL_SwapWindow(window);
 }

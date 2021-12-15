@@ -1,3 +1,6 @@
+#ifndef TERRAIN_H
+#define TERRAIN_H
+
 #pragma once
 
 #include <iostream>
@@ -14,6 +17,8 @@ public:
 		indices = 0;
 		numberOfVertices = 0;
 		numberOfIndices = 0;
+
+		std::cout << "\nTerrain Initialised" << std::endl;
 	}
 	
 	~Terrain()
@@ -27,20 +32,22 @@ public:
 	}
 
 	Vertex* vertices;
-	GLint numberOfVertices;
+	int numberOfVertices;
 
-	GLshort* indices;
-	GLint numberOfIndices;
+	short* indices;
+	int numberOfIndices;
 
-	GLint ReturnVerticeBufferSize() const
+	int ReturnVertexBufferSize() const
 	{
 		std::cout << "Vertice Buffer Size: " << numberOfVertices * sizeof(Vertex) << std::endl;
 		return numberOfVertices * sizeof(Vertex);
 	}
 
-	GLint ReturnIndiceBufferSize() const
+	int ReturnIndexBufferSize() const
 	{
-		std::cout << "Indice Buffer Size: " << numberOfIndices * sizeof(GLshort) << std::endl;
-		return numberOfIndices * sizeof(GLshort);
+		std::cout << "Indice Buffer Size: " << numberOfIndices * sizeof(short) << std::endl;
+		return numberOfIndices * sizeof(short);
 	}
 };
+
+#endif // !TERRAIN_H

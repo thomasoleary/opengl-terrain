@@ -1,5 +1,4 @@
 #include "Camera.h"
-#include <iostream>
 
 void Camera::GetMouseInput(float rotX, float rotY)
 {
@@ -25,12 +24,12 @@ void Camera::MoveBack()
     position -= walkSpeed * forward;
 }
 
-void Camera::StrafeRight()
+void Camera::StrafeLeft()
 {
     position += walkSpeed * strafe;
 }
 
-void Camera::StrafeLeft()
+void Camera::StrafeRight()
 {
     position -= walkSpeed * strafe;
 }

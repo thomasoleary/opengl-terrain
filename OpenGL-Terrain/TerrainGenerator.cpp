@@ -13,13 +13,12 @@ TerrainGenerator::~TerrainGenerator()
 
 void TerrainGenerator::GenerateTerrain(int dimension)
 {
-	std::cout << "Vertex Byte Size: " << vertexByteSize << std::endl;
+	std::cout << "Terrain Generating" << std::endl;
+	//std::cout << "Vertex Byte Size: " << vertexByteSize << std::endl;
 
-	std::cout << "\nTerrain Generating" << std::endl;
 	dimension++;
-	Dimension = dimension;
-	GenerateVertices(Dimension);
-	GenerateIndices(Dimension);
+	GenerateVertices(dimension);
+	GenerateIndices(dimension);
 
 	TerrainManager();
 	std::cout << "Terrain Generated\n" << std::endl;
@@ -29,38 +28,37 @@ void TerrainGenerator::GenerateTerrain(int dimension)
 void TerrainGenerator::GenerateVertices(int dimension)
 {
 	terrain.numberOfVertices = dimension * dimension;
-	std::cout << "Number of Vertices: " << terrain.numberOfVertices << std::endl;
+	std::cout << "Number of Verts: " << terrain.numberOfVertices << std::endl; // For debugging purposes
 
 	int halfDimension = dimension / 2;
 
-	terrain.vertices = new Vertex[terrain.numberOfVertices]();
+	terrain.vertices = new Vertex[terrain.numberOfVertices];
 
 	for (int i = 0; i < dimension; i++)
 	{
 		for (int j = 0; j < dimension; j++)
 		{
-			Vertex& currentVertice = terrain.vertices[i * dimension + j];
+			Vertex& currentVert = terrain.vertices[i * dimension + j];
 
-			currentVertice.position.x = (i - halfDimension) * gridSpacing;
-			currentVertice.position.y = 1.0f;
-			currentVertice.position.z = (j - halfDimension) * gridSpacing;
+			currentVert.position.x = (j - halfDimension) * gridSpacing;
+			currentVert.position.y = 0.0f;//noise.GetNoise(col * .15f, row * .15f) * heightScale;
+			currentVert.position.z = (i - halfDimension) * gridSpacing;
 
-			currentVertice.normals = glm::vec3(0.0f, 1.0f, 0.0f);
+			currentVert.normals = glm::vec3(0.0f, 1.0f, 0.0f);
 
-			currentVertice.colour = glm::vec3(1.0f, 1.0f, 0.0f);
-
+			currentVert.colour = glm::vec3(1.0f, 0.0f, 0.0f);
 		}
 	}
-	std::cout << "Terrain Vertices generated" << std::endl;
+	std::cout << "Terrain Vertices generated\n" << std::endl;
 }
 
 
 void TerrainGenerator::GenerateIndices(int dimension)
 {
 	terrain.numberOfIndices = (dimension - 1) * (dimension - 1) * 6;
-	std::cout << "Number of Indices: " << terrain.numberOfIndices << std::endl;
+	std::cout << "Number of Indices: " << terrain.numberOfIndices << std::endl; // For debugging purposes
 
-	terrain.indices = new GLshort[terrain.numberOfIndices]();
+	terrain.indices = new short[terrain.numberOfIndices];
 
 	int vertice = 0;
 
@@ -72,15 +70,15 @@ void TerrainGenerator::GenerateIndices(int dimension)
 			terrain.indices[vertice++] = dimension * i + j;
 			terrain.indices[vertice++] = dimension * i + j + dimension;
 			terrain.indices[vertice++] = dimension * i + j + dimension + 1;
-			
+
 			// Triangle 2
 			terrain.indices[vertice++] = dimension * i + j;
 			terrain.indices[vertice++] = dimension * i + j + 1;
 			terrain.indices[vertice++] = dimension * i + j + dimension + 1;
+
 		}
 	}
-	std::cout << "Terrain Indices generated" << std::endl;
-
+	std::cout << "Terrain Indices generated\n" << std::endl;
 }
 
 void TerrainGenerator::TerrainManager()
@@ -90,14 +88,16 @@ void TerrainGenerator::TerrainManager()
 
 	glGenBuffers(1, &vertexBufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-	glBufferData(GL_ARRAY_BUFFER, terrain.ReturnVerticeBufferSize(), terrain.vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, terrain.ReturnVertexBufferSize(), terrain.vertices, GL_STATIC_DRAW);
 
 	glGenBuffers(1, &indexArrayBufferID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexArrayBufferID);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, terrain.ReturnIndiceBufferSize(), terrain.indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, terrain.ReturnIndexBufferSize(), terrain.indices, GL_STATIC_DRAW);
+
 
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexByteSize, (void*)0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexByteSize, (void*)(sizeof(float) * 3));
+
 }
