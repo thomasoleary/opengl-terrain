@@ -24,6 +24,14 @@ void TerrainGenerator::GenerateTerrain(int dimension)
 	std::cout << "Terrain Generated\n" << std::endl;
 }
 
+glm::vec3 RandomColor()
+{
+	glm::vec3 colour;
+	colour.x = rand() / (float)RAND_MAX;
+	colour.y = rand() / (float)RAND_MAX;
+	colour.z = rand() / (float)RAND_MAX;
+	return colour;
+}
 
 void TerrainGenerator::GenerateVertices(int dimension)
 {
@@ -46,7 +54,7 @@ void TerrainGenerator::GenerateVertices(int dimension)
 
 			currentVert.normals = glm::vec3(0.0f, 1.0f, 0.0f);
 
-			currentVert.colour = glm::vec3(1.0f, 0.0f, 0.0f);
+			currentVert.colour = glm::vec3(0.0f, 1.0f, 0.0f); //RandomColor();
 		}
 	}
 	std::cout << "Terrain Vertices generated\n" << std::endl;
@@ -60,24 +68,25 @@ void TerrainGenerator::GenerateIndices(int dimension)
 
 	terrain.indices = new short[terrain.numberOfIndices];
 
-	int vertice = 0;
+	int index = 0;
 
 	for (int i = 0; i < dimension - 1; i++)
 	{
 		for (int j = 0; j < dimension - 1; j++)
 		{
 			// Triangle 1
-			terrain.indices[vertice++] = dimension * i + j;
-			terrain.indices[vertice++] = dimension * i + j + dimension;
-			terrain.indices[vertice++] = dimension * i + j + dimension + 1;
+			terrain.indices[index++] = dimension * i + j;
+			terrain.indices[index++] = dimension * i + j + dimension;
+			terrain.indices[index++] = dimension * i + j + dimension + 1;
 
 			// Triangle 2
-			terrain.indices[vertice++] = dimension * i + j;
-			terrain.indices[vertice++] = dimension * i + j + 1;
-			terrain.indices[vertice++] = dimension * i + j + dimension + 1;
+			terrain.indices[index++] = dimension * i + j;
+			terrain.indices[index++] = dimension * i + j + 1;
+			terrain.indices[index++] = dimension * i + j + dimension + 1;
 
 		}
 	}
+	assert(index == terrain.numberOfIndices);
 	std::cout << "Terrain Indices generated\n" << std::endl;
 }
 

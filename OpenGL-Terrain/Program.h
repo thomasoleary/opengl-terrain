@@ -33,7 +33,6 @@ public:
 	void Update();
 	
 private:
-	
 	void Init();
 	void InputChecks();
 	void Render();
