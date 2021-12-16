@@ -34,6 +34,7 @@ public:
 	
 private:
 	void Init();
+	void Start();
 	void InputChecks();
 	void Render();
 	void CleanUp();

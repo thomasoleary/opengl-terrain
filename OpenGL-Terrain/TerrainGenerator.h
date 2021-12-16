@@ -7,7 +7,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Terrain.h"
-#include "TerrainType.h"
 #include "Shader.h"
 
 class TerrainGenerator

@@ -2,11 +2,11 @@
 
 Program::Program()
 {
-	Init();
+	this->Init();
 }
 Program::~Program()
 {
-	CleanUp();
+	this->CleanUp();
 }
 
 void Program::Init()
@@ -43,14 +43,19 @@ void Program::Init()
 	std::cout << "Program Initialised\n" << std::endl;
 
 	running = true;
+
+	Start();
 }
 
-void Program::Update()
+void Program::Start()
 {
 	terrainGenerator.GenerateTerrain(15);
 
 	programID = LoadShaders("VertexShader.glsl", "FragmentShader.glsl");
+}
 
+void Program::Update()
+{
 	while (running)
 	{
 		InputChecks();
@@ -62,7 +67,6 @@ void Program::InputChecks()
 {
 	SDL_Event event;
 
-	//https://wiki.libsdl.org/SDL_PollEvent
 	while (SDL_PollEvent(&event))
 	{
 		switch (event.type)

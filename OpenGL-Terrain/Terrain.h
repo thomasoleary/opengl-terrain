@@ -17,6 +17,7 @@ public:
 		indices = 0;
 		numberOfVertices = 0;
 		numberOfIndices = 0;
+		dimension = 0;
 
 		std::cout << "\nTerrain Initialised" << std::endl;
 	}
@@ -30,6 +31,8 @@ public:
 
 		std::cout << "Terrain Destroyed" << std::endl;
 	}
+
+	int dimension;
 
 	Vertex* vertices;
 	int numberOfVertices;

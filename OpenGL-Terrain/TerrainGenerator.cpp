@@ -17,6 +17,7 @@ void TerrainGenerator::GenerateTerrain(int dimension)
 	//std::cout << "Vertex Byte Size: " << vertexByteSize << std::endl;
 
 	dimension++;
+	terrain.dimension = dimension;
 	GenerateVertices(dimension);
 	GenerateIndices(dimension);
 
@@ -36,7 +37,7 @@ glm::vec3 RandomColor()
 void TerrainGenerator::GenerateVertices(int dimension)
 {
 	terrain.numberOfVertices = dimension * dimension;
-	std::cout << "Number of Verts: " << terrain.numberOfVertices << std::endl; // For debugging purposes
+	std::cout << "Number of Verts: " << terrain.numberOfVertices << std::endl;
 
 	int halfDimension = dimension / 2;
 
@@ -49,7 +50,7 @@ void TerrainGenerator::GenerateVertices(int dimension)
 			Vertex& currentVert = terrain.vertices[i * dimension + j];
 
 			currentVert.position.x = (j - halfDimension) * gridSpacing;
-			currentVert.position.y = 0.0f;//noise.GetNoise(col * .15f, row * .15f) * heightScale;
+			currentVert.position.y = 0.0f;
 			currentVert.position.z = (i - halfDimension) * gridSpacing;
 
 			currentVert.normals = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -64,7 +65,7 @@ void TerrainGenerator::GenerateVertices(int dimension)
 void TerrainGenerator::GenerateIndices(int dimension)
 {
 	terrain.numberOfIndices = (dimension - 1) * (dimension - 1) * 6;
-	std::cout << "Number of Indices: " << terrain.numberOfIndices << std::endl; // For debugging purposes
+	std::cout << "Number of Indices: " << terrain.numberOfIndices << std::endl;
 
 	terrain.indices = new short[terrain.numberOfIndices];
 
@@ -89,6 +90,7 @@ void TerrainGenerator::GenerateIndices(int dimension)
 	assert(index == terrain.numberOfIndices);
 	std::cout << "Terrain Indices generated\n" << std::endl;
 }
+
 
 void TerrainGenerator::TerrainManager()
 {
