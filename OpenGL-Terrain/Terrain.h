@@ -13,21 +13,21 @@ class Terrain
 public:
 	Terrain()
 	{
-		vertices = 0;
-		indices = 0;
-		numberOfVertices = 0;
-		numberOfIndices = 0;
-		dimension = 0;
+		this->vertices = 0;
+		this->indices = 0;
+		this->numberOfVertices = 0;
+		this->numberOfIndices = 0;
+		this->dimension = 0;
 
 		std::cout << "\nTerrain Initialised" << std::endl;
 	}
 	
 	~Terrain()
 	{
-		delete[] vertices;
-		delete[] indices;
-		numberOfVertices = 0;
-		numberOfIndices = 0;
+		delete[] this->vertices;
+		delete[] this->indices;
+		this->numberOfVertices = 0;
+		this->numberOfIndices = 0;
 
 		std::cout << "Terrain Destroyed" << std::endl;
 	}

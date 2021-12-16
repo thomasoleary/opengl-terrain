@@ -11,13 +11,27 @@ TerrainGenerator::~TerrainGenerator()
 	std::cout << "TerrainGenerator Destroyed" << std::endl;
 }
 
+void TerrainGenerator::InitValues(int dimension)
+{
+	terrain.dimension = dimension;
+	halfDimension = dimension / 2;
+
+	terrain.numberOfVertices = dimension * dimension;
+	std::cout << "Number of Verts: " << terrain.numberOfVertices << std::endl;
+	terrain.vertices = new Vertex[terrain.numberOfVertices];
+
+	terrain.numberOfIndices = (dimension - 1) * (dimension - 1) * 6;
+	std::cout << "Number of Indices: " << terrain.numberOfIndices << std::endl;
+	terrain.indices = new short[terrain.numberOfIndices];
+}
+
 void TerrainGenerator::GenerateTerrain(int dimension)
 {
 	std::cout << "Terrain Generating" << std::endl;
 	//std::cout << "Vertex Byte Size: " << vertexByteSize << std::endl;
-
 	dimension++;
-	terrain.dimension = dimension;
+	InitValues(dimension);
+
 	GenerateVertices(dimension);
 	GenerateIndices(dimension);
 
@@ -25,24 +39,8 @@ void TerrainGenerator::GenerateTerrain(int dimension)
 	std::cout << "Terrain Generated\n" << std::endl;
 }
 
-glm::vec3 RandomColor()
-{
-	glm::vec3 colour;
-	colour.x = rand() / (float)RAND_MAX;
-	colour.y = rand() / (float)RAND_MAX;
-	colour.z = rand() / (float)RAND_MAX;
-	return colour;
-}
-
 void TerrainGenerator::GenerateVertices(int dimension)
 {
-	terrain.numberOfVertices = dimension * dimension;
-	std::cout << "Number of Verts: " << terrain.numberOfVertices << std::endl;
-
-	int halfDimension = dimension / 2;
-
-	terrain.vertices = new Vertex[terrain.numberOfVertices];
-
 	for (int i = 0; i < dimension; i++)
 	{
 		for (int j = 0; j < dimension; j++)
@@ -55,20 +53,15 @@ void TerrainGenerator::GenerateVertices(int dimension)
 
 			currentVert.normals = glm::vec3(0.0f, 1.0f, 0.0f);
 
-			currentVert.colour = glm::vec3(0.0f, 1.0f, 0.0f); //RandomColor();
+			currentVert.colour = glm::vec3(0.0f, 1.0f, 0.0f);
 		}
 	}
-	std::cout << "Terrain Vertices generated\n" << std::endl;
+	std::cout << "Terrain Vertices generated" << std::endl;
 }
 
 
 void TerrainGenerator::GenerateIndices(int dimension)
 {
-	terrain.numberOfIndices = (dimension - 1) * (dimension - 1) * 6;
-	std::cout << "Number of Indices: " << terrain.numberOfIndices << std::endl;
-
-	terrain.indices = new short[terrain.numberOfIndices];
-
 	int index = 0;
 
 	for (int i = 0; i < dimension - 1; i++)
@@ -91,6 +84,10 @@ void TerrainGenerator::GenerateIndices(int dimension)
 	std::cout << "Terrain Indices generated\n" << std::endl;
 }
 
+void TerrainGenerator::ApplyNoise(int dimension)
+{
+
+}
 
 void TerrainGenerator::TerrainManager()
 {
