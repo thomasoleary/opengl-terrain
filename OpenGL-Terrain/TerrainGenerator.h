@@ -16,7 +16,7 @@ public:
 	~TerrainGenerator();
 
 	Terrain terrain = Terrain();
-	//Noise noise = Noise();
+	Noise noise = Noise();
 
 	void GenerateTerrain(int dimension);
 
@@ -37,7 +37,7 @@ private:
 
 
 	int halfDimension;
-	float gridSpacing = 1.0f;
+	float gridSpacing = 0.15f;
 };
 
 #endif // !TERRAIN_GENERATOR_H

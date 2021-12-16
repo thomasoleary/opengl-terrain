@@ -3,7 +3,9 @@
 Noise::Noise()
 {
 	currentHeight = 0.0f;
-	heightScale = 1.0f;
+	heightScale = 3.0f;
+
+	InitNoise();
 }
 
 void Noise::GenerateSeed()
@@ -11,6 +13,7 @@ void Noise::GenerateSeed()
 	srand(time(NULL));
 	int seed = rand() % 100 + 1;
 
+	std::cout << "Seed: " << seed << std::endl;
 	fNoise.SetSeed(seed);
 }
 
@@ -25,19 +28,11 @@ void Noise::InitNoise()
 	fNoise.SetFractalOctaves(5);
 
 	fNoise.SetFrequency(0.6f);
+
+	std::cout << "Noise Initialised" << std::endl;
 }
 
-void Noise::ApplyNoise(Terrain &terrain)
+float Noise::ApplyNoise(int i, int j)
 {
-	for (int i = 0; i < terrain.dimension; i++)
-	{
-		for (int j = 0; j < terrain.dimension; j++)
-		{
-			Vertex& currentVert = terrain.vertices[i * terrain.dimension + j];
-			
-			currentHeight = fNoise.GetNoise(i * 0.03f, j * 0.03f) * heightScale;
-
-			currentVert.position.y = currentHeight; // noise stuff
-		}
-	}
+	return fNoise.GetNoise(i * 0.03f, j * 0.03f) * heightScale;
 }

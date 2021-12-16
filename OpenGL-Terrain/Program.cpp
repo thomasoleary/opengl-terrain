@@ -89,6 +89,10 @@ void Program::InputChecks()
 				isWireFrameToggled = !isWireFrameToggled;
 				WireFrameMode();
 				break;
+			case SDLK_SPACE:
+				terrainGenerator.ApplyNoise(15);
+				std::cout << "Space bar" << std::endl;
+				break;
 			}
 
 		case SDL_KEYDOWN:

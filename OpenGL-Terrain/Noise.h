@@ -2,7 +2,7 @@
 #define NOISE_H
 #pragma once
 
-#include "Terrain.h"
+#include <iostream>
 #include "FastNoiseLite.h"
 
 class Noise
@@ -10,11 +10,10 @@ class Noise
 public:
 	Noise();
 
-	Terrain noiseTerrain;
 	FastNoiseLite fNoise = FastNoiseLite();
 
 	void InitNoise();
-	void ApplyNoise(Terrain &terrain);
+	float ApplyNoise(int i, int j);
 
 	void GenerateSeed();
 

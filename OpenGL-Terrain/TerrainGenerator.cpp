@@ -27,8 +27,6 @@ void TerrainGenerator::InitValues(int dimension)
 
 void TerrainGenerator::GenerateTerrain(int dimension)
 {
-	std::cout << "Terrain Generating" << std::endl;
-	//std::cout << "Vertex Byte Size: " << vertexByteSize << std::endl;
 	dimension++;
 	InitValues(dimension);
 
@@ -48,7 +46,7 @@ void TerrainGenerator::GenerateVertices(int dimension)
 			Vertex& currentVert = terrain.vertices[i * dimension + j];
 
 			currentVert.position.x = (j - halfDimension) * gridSpacing;
-			currentVert.position.y = 0.0f;
+			currentVert.position.y = 0.0f;// noise.ApplyNoise(i, j);
 			currentVert.position.z = (i - halfDimension) * gridSpacing;
 
 			currentVert.normals = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -86,7 +84,16 @@ void TerrainGenerator::GenerateIndices(int dimension)
 
 void TerrainGenerator::ApplyNoise(int dimension)
 {
+	std::cout << "Apply noise" << std::endl;
+	for (int i = 0; i < dimension; i++)
+	{
+		for (int j = 0; j < dimension; j++)
+		{
+			Vertex& currentVert = terrain.vertices[i * dimension + j];
 
+			currentVert.position.y += noise.ApplyNoise(i, j);
+		}
+	}
 }
 
 void TerrainGenerator::TerrainManager()
