@@ -39,7 +39,6 @@ void TerrainGenerator::GenerateTerrain(int dimension)
 
 void TerrainGenerator::GenerateVertices(int dimension)
 {
-	bool printOnce = false;
 	for (int i = 0; i < dimension; i++)
 	{
 		for (int j = 0; j < dimension; j++)
@@ -50,21 +49,7 @@ void TerrainGenerator::GenerateVertices(int dimension)
 			currentVert.position.y = 0.0f;// noise.ApplyNoise(i, j);
 			currentVert.position.z = (i - halfDimension) * gridSpacing;
 
-			currentVert.normals = glm::vec3(0.0f, 1.0f, 0.0f);
-
 			currentVert.colour = glm::vec3(0.0f, 1.0f, 0.0f);
-
-			if (!printOnce)
-			{
-				if (i == 1 && j == 3)
-				{
-					std::cout << "Generate Vertice Values" << std::endl;
-					std::cout << "i: " << i << std::endl;
-					std::cout << "j: " << j << std::endl;
-					std::cout << "currentVert.position.y: " << currentVert.position.y << std::endl;
-					printOnce = true;
-				}
-			}
 		}
 	}
 	std::cout << "Terrain Vertices generated" << std::endl;
@@ -101,26 +86,13 @@ void TerrainGenerator::ApplyNoise(int dimension)
 
 	noise.GenerateSeed();
 
-	bool printOnce = false;
 	for (int i = 0; i < dimension; i++)
 	{
 		for (int j = 0; j < dimension; j++)
 		{
 			Vertex& currentVert = terrain.vertices[i * dimension + j];
 
-
 			currentVert.position.y = noise.ApplyNoise(i, j);
-			if (!printOnce)
-			{
-				if (i == 1 && j == 3)
-				{
-					std::cout << "Apply Noise Values" << std::endl;
-					std::cout << "i: " << i << std::endl;
-					std::cout << "j: " << j << std::endl;
-					std::cout << "currentVert.position.y: " << currentVert.position.y << std::endl;
-					printOnce = true;
-				}
-			}
 		}
 	}
 }
