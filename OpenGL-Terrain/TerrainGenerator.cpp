@@ -29,8 +29,8 @@ void TerrainGenerator::Generate(int dimension)
 {
 	Init(++dimension);
 
-	GenerateVertices();
 	GenerateIndices();
+	GenerateVertices();
 
 	TerrainManager();
 	std::cout << "Terrain Generated\n" << std::endl;
@@ -88,7 +88,7 @@ void TerrainGenerator::TerrainManager()
 
 	glGenBuffers(1, &vertexBufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-	glBufferData(GL_ARRAY_BUFFER, terrain.ReturnVertexBufferSize(), terrain.vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, terrain.ReturnVertexBufferSize(), terrain.vertices, GL_DYNAMIC_DRAW);
 
 	glGenBuffers(1, &indexArrayBufferID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexArrayBufferID);
