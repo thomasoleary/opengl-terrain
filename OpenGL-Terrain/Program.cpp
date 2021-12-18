@@ -1,5 +1,9 @@
 #include "Program.h"
 
+const int TERRAIN_SIZE = 255;
+const float GRID_SPACING = 0.15f;
+const float HEIGHT_SCALE = 3.0f;
+
 Program::Program()
 {
 	this->Init();
@@ -11,13 +15,22 @@ Program::~Program()
 
 void Program::Init()
 {
+	InitWindow();
+	InitGLEW();
+
+	Start();
+	
+	std::cout << "Program Initialised\n" << std::endl;
+}
+void Program::InitWindow()
+{
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "SDL_Init failed", SDL_GetError(), NULL);
 		return;
 	}
 
-	window = SDL_CreateWindow(windowName.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 640, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+	window = SDL_CreateWindow(windowName.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, (int)windowRes.x, (int)windowRes.y, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 
 	if (window == nullptr)
 	{
@@ -32,26 +45,28 @@ void Program::Init()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	glContext = SDL_GL_CreateContext(window);
-
+}
+void Program::InitGLEW()
+{
 	glewExperimental = GL_TRUE;
 	GLenum glewError = glewInit();
 	if (glewError != GLEW_OK)
 	{
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "GLEW Failed to Initialise", SDL_GetError(), NULL);
 	}
-
-	std::cout << "Program Initialised\n" << std::endl;
-
-	running = true;
-
-	Start();
 }
 
 void Program::Start()
 {
-	terrainGenerator.GenerateTerrain(15);
+	if (!(programID = LoadShaders("VertexShader.glsl", "FragmentShader.glsl")))
+		throw std::runtime_error("Failed to load shaders");
+	
+	Create();
 
-	programID = LoadShaders("VertexShader.glsl", "FragmentShader.glsl");
+	Generate();
+	
+
+	running = true;
 }
 
 void Program::Update()
@@ -90,8 +105,8 @@ void Program::InputChecks()
 				WireFrameMode();
 				break;
 			case SDLK_SPACE:
-				terrainGenerator.ApplyNoise(15);
-				std::cout << "Space bar" << std::endl;
+				Generate();
+				//std::cout << "Space bar" << std::endl;
 				break;
 			}
 
@@ -120,10 +135,12 @@ void Program::InputChecks()
 
 void Program::Render()
 {
+	glEnable(GL_DEPTH_TEST);
+
+	glViewport(0, 0, (int)windowRes.x, (int)windowRes.y);
 	glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glEnable(GL_DEPTH_TEST);
 
 	glUseProgram(programID);
 
@@ -145,6 +162,18 @@ void Program::CleanUp()
 
 	std::cout << "Program Clean Up" << std::endl;
 	return;
+}
+
+void Program::Create()
+{
+	if (!terrainGenerator.Create(TERRAIN_SIZE, GRID_SPACING, HEIGHT_SCALE))
+		throw std::runtime_error("Failed to create terrain.");
+}
+
+void Program::Generate()
+{
+	if (!terrainGenerator.Generate())
+		throw std::runtime_error("Failed to generate terrain.");
 }
 
 void Program::WireFrameMode()

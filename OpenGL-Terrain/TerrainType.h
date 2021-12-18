@@ -4,7 +4,6 @@
 
 struct TerrainType
 {
-	std::string name;
 	float height;
 	glm::vec3 colour;
 };

@@ -33,8 +33,15 @@ public:
 	void Update();
 	
 private:
+	// Initialise
 	void Init();
+	void InitWindow();
+	void InitGLEW();
+
 	void Start();
+	void Create();
+	void Generate();
+
 	void InputChecks();
 	void Render();
 	void CleanUp();
@@ -45,6 +52,7 @@ private:
 	SDL_Window* window = nullptr;
 	SDL_GLContext glContext = NULL;
 	std::string windowName = "OpenGL Terrain";
+	glm::vec2 windowRes = glm::vec2(960, 540);
 
 	// Shader related
 	GLuint programID = NULL;
@@ -56,9 +64,6 @@ private:
 	// Misc
 	bool running = false;
 	bool isWireFrameToggled = false;
-	int numberOfIndicies = 0;
-
-
 };
 
 #endif // !PROGRAM_H
