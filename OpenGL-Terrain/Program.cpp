@@ -17,7 +17,7 @@ void Program::Init()
 		return;
 	}
 
-	window = SDL_CreateWindow(windowName.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth, windowHeight, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+	window = SDL_CreateWindow(windowName.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, (int)windowRes.x, (int)windowRes.y, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 
 	if (window == nullptr)
 	{
@@ -49,7 +49,7 @@ void Program::Init()
 
 void Program::Start()
 {
-	terrainGenerator.GenerateTerrain(100);
+	terrainGenerator.Generate(4);
 
 	programID = LoadShaders("VertexShader.glsl", "FragmentShader.glsl");
 }
@@ -122,7 +122,7 @@ void Program::Render()
 {
 	glEnable(GL_DEPTH_TEST);
 
-	glViewport(0, 0, windowWidth, windowHeight);
+	glViewport(0, 0, (int)windowRes.x, (int)windowRes.y);
 	glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

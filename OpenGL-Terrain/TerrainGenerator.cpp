@@ -25,10 +25,9 @@ void TerrainGenerator::Init(int dimension)
 	terrain.indices = new short[terrain.numberOfIndices];
 }
 
-void TerrainGenerator::GenerateTerrain(int dimension)
+void TerrainGenerator::Generate(int dimension)
 {
-	dimension++;
-	Init(dimension);
+	Init(++dimension);
 
 	GenerateVertices();
 	GenerateIndices();

@@ -45,8 +45,7 @@ private:
 	SDL_Window* window = nullptr;
 	SDL_GLContext glContext = NULL;
 	std::string windowName = "OpenGL Terrain";
-	int windowWidth = 960;
-	int windowHeight = 540;
+	glm::vec2 windowRes = glm::vec2(960, 540);
 
 	// Shader related
 	GLuint programID = NULL;
@@ -58,9 +57,6 @@ private:
 	// Misc
 	bool running = false;
 	bool isWireFrameToggled = false;
-	int numberOfIndicies = 0;
-
-
 };
 
 #endif // !PROGRAM_H

@@ -16,7 +16,7 @@ public:
 
 	Terrain terrain = Terrain();
 
-	void GenerateTerrain(int dimension);
+	void Generate(int dimension);
 
 	void TerrainManager();
 
