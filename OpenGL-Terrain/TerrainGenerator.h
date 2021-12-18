@@ -8,7 +8,6 @@
 
 #include "Terrain.h"
 #include "Shader.h"
-#include "Noise.h"
 
 class TerrainGenerator
 {
@@ -16,11 +15,8 @@ public:
 	~TerrainGenerator();
 
 	Terrain terrain = Terrain();
-	Noise noise = Noise();
 
 	void GenerateTerrain(int dimension);
-
-	void ApplyNoise(int dimension);
 
 	void TerrainManager();
 
@@ -31,13 +27,13 @@ public:
 
 
 private:
-	void InitValues(int dimension);
+	void Init(int dimension);
 	void GenerateVertices(int dimension);
 	void GenerateIndices(int dimension);
 
 
 	int halfDimension;
-	float gridSpacing = 0.15f;
+	float gridSpacing = 1.0f;
 };
 
 #endif // !TERRAIN_GENERATOR_H

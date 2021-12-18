@@ -11,7 +11,7 @@ TerrainGenerator::~TerrainGenerator()
 	std::cout << "TerrainGenerator Destroyed" << std::endl;
 }
 
-void TerrainGenerator::InitValues(int dimension)
+void TerrainGenerator::Init(int dimension)
 {
 	terrain.dimension = dimension;
 	halfDimension = dimension / 2;
@@ -28,7 +28,7 @@ void TerrainGenerator::InitValues(int dimension)
 void TerrainGenerator::GenerateTerrain(int dimension)
 {
 	dimension++;
-	InitValues(dimension);
+	Init(dimension);
 
 	GenerateVertices(dimension);
 	GenerateIndices(dimension);
@@ -46,7 +46,7 @@ void TerrainGenerator::GenerateVertices(int dimension)
 			Vertex& currentVert = terrain.vertices[i * dimension + j];
 
 			currentVert.position.x = (j - halfDimension) * gridSpacing;
-			currentVert.position.y = 0.0f;// noise.ApplyNoise(i, j);
+			currentVert.position.y = 0.0f;
 			currentVert.position.z = (i - halfDimension) * gridSpacing;
 
 			currentVert.colour = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -54,7 +54,6 @@ void TerrainGenerator::GenerateVertices(int dimension)
 	}
 	std::cout << "Terrain Vertices generated" << std::endl;
 }
-
 
 void TerrainGenerator::GenerateIndices(int dimension)
 {
@@ -78,23 +77,6 @@ void TerrainGenerator::GenerateIndices(int dimension)
 	}
 	assert(index == terrain.numberOfIndices);
 	std::cout << "Terrain Indices generated\n" << std::endl;
-}
-
-void TerrainGenerator::ApplyNoise(int dimension)
-{
-	std::cout << "Apply noise" << std::endl;
-
-	noise.GenerateSeed();
-
-	for (int i = 0; i < dimension; i++)
-	{
-		for (int j = 0; j < dimension; j++)
-		{
-			Vertex& currentVert = terrain.vertices[i * dimension + j];
-
-			currentVert.position.y = noise.ApplyNoise(i, j);
-		}
-	}
 }
 
 void TerrainGenerator::TerrainManager()

@@ -17,7 +17,7 @@ void Program::Init()
 		return;
 	}
 
-	window = SDL_CreateWindow(windowName.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 640, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+	window = SDL_CreateWindow(windowName.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth, windowHeight, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 
 	if (window == nullptr)
 	{
@@ -49,7 +49,7 @@ void Program::Init()
 
 void Program::Start()
 {
-	terrainGenerator.GenerateTerrain(15);
+	terrainGenerator.GenerateTerrain(100);
 
 	programID = LoadShaders("VertexShader.glsl", "FragmentShader.glsl");
 }
@@ -89,10 +89,10 @@ void Program::InputChecks()
 				isWireFrameToggled = !isWireFrameToggled;
 				WireFrameMode();
 				break;
-			case SDLK_SPACE:
+			/*case SDLK_SPACE:
 				terrainGenerator.ApplyNoise(15);
 				std::cout << "Space bar" << std::endl;
-				break;
+				break;*/
 			}
 
 		case SDL_KEYDOWN:
@@ -120,10 +120,12 @@ void Program::InputChecks()
 
 void Program::Render()
 {
+	glEnable(GL_DEPTH_TEST);
+
+	glViewport(0, 0, windowWidth, windowHeight);
 	glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glEnable(GL_DEPTH_TEST);
 
 	glUseProgram(programID);
 

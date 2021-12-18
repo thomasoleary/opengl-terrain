@@ -45,6 +45,8 @@ private:
 	SDL_Window* window = nullptr;
 	SDL_GLContext glContext = NULL;
 	std::string windowName = "OpenGL Terrain";
+	int windowWidth = 960;
+	int windowHeight = 540;
 
 	// Shader related
 	GLuint programID = NULL;
