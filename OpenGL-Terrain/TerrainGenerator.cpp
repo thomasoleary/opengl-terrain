@@ -38,6 +38,7 @@ void TerrainGenerator::Generate(int dimension)
 
 void TerrainGenerator::GenerateVertices()
 {
+	int index = 0;
 	for (int i = 0; i < terrain.dimension; i++)
 	{
 		for (int j = 0; j < terrain.dimension; j++)
@@ -49,9 +50,11 @@ void TerrainGenerator::GenerateVertices()
 			currentVert.position.z = (i - halfDimension) * gridSpacing;
 
 			currentVert.colour = glm::vec3(0.0f, 1.0f, 0.0f);
+			index++;
 		}
 	}
-	std::cout << "Terrain Vertices generated" << std::endl;
+	assert(index == terrain.numberOfVertices);
+	std::cout << "\nTerrain Vertices generated" << std::endl;
 }
 
 void TerrainGenerator::GenerateIndices()
