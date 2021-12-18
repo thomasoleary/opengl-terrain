@@ -34,7 +34,12 @@ public:
 	
 private:
 	void Init();
+
+	void InitWindow();
+	void InitGLEW();
+
 	void Start();
+
 	void InputChecks();
 	void Render();
 	void CleanUp();

@@ -11,6 +11,17 @@ Program::~Program()
 
 void Program::Init()
 {
+	InitWindow();
+	InitGLEW();
+
+	Start();
+	running = true;
+
+	std::cout << "Program Initialised\n" << std::endl;
+}
+
+void Program::InitWindow()
+{
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "SDL_Init failed", SDL_GetError(), NULL);
@@ -32,26 +43,23 @@ void Program::Init()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	glContext = SDL_GL_CreateContext(window);
-
+}
+void Program::InitGLEW()
+{
 	glewExperimental = GL_TRUE;
 	GLenum glewError = glewInit();
 	if (glewError != GLEW_OK)
 	{
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "GLEW Failed to Initialise", SDL_GetError(), NULL);
 	}
-
-	std::cout << "Program Initialised\n" << std::endl;
-
-	running = true;
-
-	Start();
 }
 
 void Program::Start()
 {
+	if (!(programID = LoadShaders("VertexShader.glsl", "FragmentShader.glsl")))
+		throw std::runtime_error("Failed to load shaders");
+	
 	terrainGenerator.Generate(4);
-
-	programID = LoadShaders("VertexShader.glsl", "FragmentShader.glsl");
 }
 
 void Program::Update()
