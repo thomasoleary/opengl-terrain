@@ -15,11 +15,9 @@ void Program::Init()
 	InitGLEW();
 
 	Start();
-	running = true;
-
+	
 	std::cout << "Program Initialised\n" << std::endl;
 }
-
 void Program::InitWindow()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -60,6 +58,7 @@ void Program::Start()
 		throw std::runtime_error("Failed to load shaders");
 	
 	terrainGenerator.Generate(4);
+	running = true;
 }
 
 void Program::Update()

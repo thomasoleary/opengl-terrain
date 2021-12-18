@@ -33,8 +33,8 @@ public:
 	void Update();
 	
 private:
+	// Initialise
 	void Init();
-
 	void InitWindow();
 	void InitGLEW();
 
