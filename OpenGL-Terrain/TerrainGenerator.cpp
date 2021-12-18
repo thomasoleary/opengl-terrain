@@ -11,32 +11,34 @@ TerrainGenerator::~TerrainGenerator()
 	std::cout << "TerrainGenerator Destroyed" << std::endl;
 }
 
-void TerrainGenerator::Init(int dimension)
+bool TerrainGenerator::Init(int dimension)
 {
 	terrain.dimension = dimension;
-	halfDimension = dimension / 2;
+	halfDimension = terrain.dimension / 2;
 
-	terrain.numberOfVertices = dimension * dimension;
+	terrain.numberOfVertices = terrain.dimension * terrain.dimension;
 	std::cout << "Number of Verts: " << terrain.numberOfVertices << std::endl;
 	terrain.vertices = new Vertex[terrain.numberOfVertices];
-
-	terrain.numberOfIndices = (dimension - 1) * (dimension - 1) * 6;
+	
+	terrain.numberOfIndices = (terrain.dimension - 1) * (terrain.dimension - 1) * 6;
 	std::cout << "Number of Indices: " << terrain.numberOfIndices << std::endl;
 	terrain.indices = new short[terrain.numberOfIndices];
+	
+	return GenerateIndices();
 }
 
-void TerrainGenerator::Generate(int dimension)
+bool TerrainGenerator::Create(int dimension)
 {
-	Init(++dimension);
-
-	GenerateIndices();
-	GenerateVertices();
-
-	TerrainManager();
-	std::cout << "Terrain Generated\n" << std::endl;
+	return Init(++dimension);
 }
 
-void TerrainGenerator::GenerateVertices()
+bool TerrainGenerator::Generate()
+{
+	// something noise
+	return GenerateVertices();
+}
+
+bool TerrainGenerator::GenerateVertices()
 {
 	int index = 0;
 	for (int i = 0; i < terrain.dimension; i++)
@@ -45,22 +47,23 @@ void TerrainGenerator::GenerateVertices()
 		{
 			Vertex& currentVert = terrain.vertices[i * terrain.dimension + j];
 
-			currentVert.position.x = (j - halfDimension) * gridSpacing;
+			currentVert.position.x = static_cast<float>((j - halfDimension) * gridSpacing);
 			currentVert.position.y = 0.0f;
-			currentVert.position.z = (i - halfDimension) * gridSpacing;
+			currentVert.position.z = static_cast<float>((i - halfDimension) * gridSpacing);
 
 			currentVert.colour = glm::vec3(0.0f, 1.0f, 0.0f);
 			index++;
 		}
 	}
 	assert(index == terrain.numberOfVertices);
-	std::cout << "\nTerrain Vertices generated" << std::endl;
+	std::cout << "Terrain Vertices generated" << std::endl;
+
+	return TerrainManager();
 }
 
-void TerrainGenerator::GenerateIndices()
+bool TerrainGenerator::GenerateIndices()
 {
 	int index = 0;
-
 	for (int i = 0; i < terrain.dimension - 1; i++)
 	{
 		for (int j = 0; j < terrain.dimension - 1; j++)
@@ -78,10 +81,12 @@ void TerrainGenerator::GenerateIndices()
 		}
 	}
 	assert(index == terrain.numberOfIndices);
-	std::cout << "Terrain Indices generated\n" << std::endl;
+	std::cout << "Terrain Indices generated" << std::endl;
+
+	return true;
 }
 
-void TerrainGenerator::TerrainManager()
+bool TerrainGenerator::TerrainManager()
 {
 	glGenVertexArrays(1, &vertexArrayID);
 	glBindVertexArray(vertexArrayID);
@@ -94,10 +99,10 @@ void TerrainGenerator::TerrainManager()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexArrayBufferID);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, terrain.ReturnIndexBufferSize(), terrain.indices, GL_STATIC_DRAW);
 
-
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexByteSize, (void*)0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexByteSize, (void*)(sizeof(float) * 3));
 
+	return true;
 }

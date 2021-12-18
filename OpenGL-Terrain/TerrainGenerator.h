@@ -16,9 +16,11 @@ public:
 
 	Terrain terrain = Terrain();
 
-	void Generate(int dimension);
+	bool Create(int dimension);
 
-	void TerrainManager();
+	bool Generate();
+
+	bool TerrainManager();
 
 	GLuint vertexArrayID;
 	GLuint vertexBufferID;
@@ -27,9 +29,9 @@ public:
 
 
 private:
-	void Init(int dimension);
-	void GenerateVertices();
-	void GenerateIndices();
+	bool Init(int dimension);
+	bool GenerateVertices();
+	bool GenerateIndices();
 
 
 	int halfDimension;

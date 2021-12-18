@@ -1,5 +1,7 @@
 #include "Program.h"
 
+const int TERRAIN_SIZE = 4;
+
 Program::Program()
 {
 	this->Init();
@@ -57,7 +59,12 @@ void Program::Start()
 	if (!(programID = LoadShaders("VertexShader.glsl", "FragmentShader.glsl")))
 		throw std::runtime_error("Failed to load shaders");
 	
-	terrainGenerator.Generate(4);
+	if(!terrainGenerator.Create(TERRAIN_SIZE))
+		throw std::runtime_error("Failed to create terrain.");
+
+	if(!terrainGenerator.Generate())
+		throw std::runtime_error("Failed to generate terrain.");
+
 	running = true;
 }
 

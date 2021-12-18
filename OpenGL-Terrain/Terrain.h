@@ -42,13 +42,13 @@ public:
 
 	int ReturnVertexBufferSize() const
 	{
-		std::cout << "Vertice Buffer Size: " << numberOfVertices * sizeof(Vertex) << std::endl;
+		//std::cout << "Vertice Buffer Size: " << numberOfVertices * sizeof(Vertex) << std::endl;
 		return numberOfVertices * sizeof(Vertex);
 	}
 
 	int ReturnIndexBufferSize() const
 	{
-		std::cout << "Indice Buffer Size: " << numberOfIndices * sizeof(short) << std::endl;
+		//std::cout << "Indice Buffer Size: " << numberOfIndices * sizeof(short) << std::endl;
 		return numberOfIndices * sizeof(short);
 	}
 };
