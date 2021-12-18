@@ -8,6 +8,7 @@
 
 #include "Terrain.h"
 #include "Shader.h"
+#include "Noise.h"
 
 class TerrainGenerator
 {
@@ -15,6 +16,7 @@ public:
 	~TerrainGenerator();
 
 	Terrain terrain = Terrain();
+	Noise noise = Noise();
 
 	bool Create(int dimension);
 

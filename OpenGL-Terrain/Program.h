@@ -39,6 +39,8 @@ private:
 	void InitGLEW();
 
 	void Start();
+	void Create();
+	void Generate();
 
 	void InputChecks();
 	void Render();

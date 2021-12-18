@@ -19,8 +19,6 @@ void Noise::GenerateSeed()
 
 void Noise::InitNoise()
 {
-	GenerateSeed();
-
 	fNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 
 	fNoise.SetFractalType(FastNoiseLite::FractalType_FBm);
@@ -34,5 +32,5 @@ void Noise::InitNoise()
 
 float Noise::ApplyNoise(int i, int j)
 {
-	return fNoise.GetNoise(i * 0.03f, j * 0.03f) * heightScale;
+	return fNoise.GetNoise(i * 0.5f, j * 0.5f) * heightScale;
 }

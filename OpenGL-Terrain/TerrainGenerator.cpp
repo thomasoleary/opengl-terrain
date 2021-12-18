@@ -35,6 +35,7 @@ bool TerrainGenerator::Create(int dimension)
 bool TerrainGenerator::Generate()
 {
 	// something noise
+	noise.GenerateSeed();
 	return GenerateVertices();
 }
 
@@ -48,7 +49,7 @@ bool TerrainGenerator::GenerateVertices()
 			Vertex& currentVert = terrain.vertices[i * terrain.dimension + j];
 
 			currentVert.position.x = static_cast<float>((j - halfDimension) * gridSpacing);
-			currentVert.position.y = 0.0f;
+			currentVert.position.y = noise.ApplyNoise(i, j);
 			currentVert.position.z = static_cast<float>((i - halfDimension) * gridSpacing);
 
 			currentVert.colour = glm::vec3(0.0f, 1.0f, 0.0f);

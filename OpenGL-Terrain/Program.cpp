@@ -1,6 +1,6 @@
 #include "Program.h"
 
-const int TERRAIN_SIZE = 4;
+const int TERRAIN_SIZE = 50;
 
 Program::Program()
 {
@@ -59,11 +59,10 @@ void Program::Start()
 	if (!(programID = LoadShaders("VertexShader.glsl", "FragmentShader.glsl")))
 		throw std::runtime_error("Failed to load shaders");
 	
-	if(!terrainGenerator.Create(TERRAIN_SIZE))
-		throw std::runtime_error("Failed to create terrain.");
+	Create();
 
-	if(!terrainGenerator.Generate())
-		throw std::runtime_error("Failed to generate terrain.");
+	Generate();
+	
 
 	running = true;
 }
@@ -103,10 +102,10 @@ void Program::InputChecks()
 				isWireFrameToggled = !isWireFrameToggled;
 				WireFrameMode();
 				break;
-			/*case SDLK_SPACE:
-				terrainGenerator.ApplyNoise(15);
-				std::cout << "Space bar" << std::endl;
-				break;*/
+			case SDLK_SPACE:
+				Generate();
+				//std::cout << "Space bar" << std::endl;
+				break;
 			}
 
 		case SDL_KEYDOWN:
@@ -161,6 +160,18 @@ void Program::CleanUp()
 
 	std::cout << "Program Clean Up" << std::endl;
 	return;
+}
+
+void Program::Create()
+{
+	if (!terrainGenerator.Create(TERRAIN_SIZE))
+		throw std::runtime_error("Failed to create terrain.");
+}
+
+void Program::Generate()
+{
+	if (!terrainGenerator.Generate())
+		throw std::runtime_error("Failed to generate terrain.");
 }
 
 void Program::WireFrameMode()
