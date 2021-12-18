@@ -16,25 +16,22 @@ public:
 	~TerrainGenerator();
 
 	Terrain terrain = Terrain();
-	Noise noise = Noise();
 
 	bool Create(int dimension);
-
 	bool Generate();
 
+private:
+	Noise noise = Noise();
+
+	bool Init(int dimension);
+	bool GenerateVertices();
+	bool GenerateIndices();
 	bool TerrainManager();
 
 	GLuint vertexArrayID;
 	GLuint vertexBufferID;
 	GLuint indexArrayBufferID;
 	GLuint vertexByteSize = sizeof(Vertex);
-
-
-private:
-	bool Init(int dimension);
-	bool GenerateVertices();
-	bool GenerateIndices();
-
 
 	int halfDimension;
 	float gridSpacing = 1.0f;
