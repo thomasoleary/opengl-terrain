@@ -30,20 +30,20 @@ void TerrainGenerator::GenerateTerrain(int dimension)
 	dimension++;
 	Init(dimension);
 
-	GenerateVertices(dimension);
-	GenerateIndices(dimension);
+	GenerateVertices();
+	GenerateIndices();
 
 	TerrainManager();
 	std::cout << "Terrain Generated\n" << std::endl;
 }
 
-void TerrainGenerator::GenerateVertices(int dimension)
+void TerrainGenerator::GenerateVertices()
 {
-	for (int i = 0; i < dimension; i++)
+	for (int i = 0; i < terrain.dimension; i++)
 	{
-		for (int j = 0; j < dimension; j++)
+		for (int j = 0; j < terrain.dimension; j++)
 		{
-			Vertex& currentVert = terrain.vertices[i * dimension + j];
+			Vertex& currentVert = terrain.vertices[i * terrain.dimension + j];
 
 			currentVert.position.x = (j - halfDimension) * gridSpacing;
 			currentVert.position.y = 0.0f;
@@ -55,23 +55,23 @@ void TerrainGenerator::GenerateVertices(int dimension)
 	std::cout << "Terrain Vertices generated" << std::endl;
 }
 
-void TerrainGenerator::GenerateIndices(int dimension)
+void TerrainGenerator::GenerateIndices()
 {
 	int index = 0;
 
-	for (int i = 0; i < dimension - 1; i++)
+	for (int i = 0; i < terrain.dimension - 1; i++)
 	{
-		for (int j = 0; j < dimension - 1; j++)
+		for (int j = 0; j < terrain.dimension - 1; j++)
 		{
 			// Triangle 1
-			terrain.indices[index++] = dimension * i + j;
-			terrain.indices[index++] = dimension * i + j + dimension;
-			terrain.indices[index++] = dimension * i + j + dimension + 1;
+			terrain.indices[index++] = terrain.dimension * i + j;
+			terrain.indices[index++] = terrain.dimension * i + j + terrain.dimension;
+			terrain.indices[index++] = terrain.dimension * i + j + terrain.dimension + 1;
 
 			// Triangle 2
-			terrain.indices[index++] = dimension * i + j;
-			terrain.indices[index++] = dimension * i + j + 1;
-			terrain.indices[index++] = dimension * i + j + dimension + 1;
+			terrain.indices[index++] = terrain.dimension * i + j;
+			terrain.indices[index++] = terrain.dimension * i + j + 1;
+			terrain.indices[index++] = terrain.dimension * i + j + terrain.dimension + 1;
 
 		}
 	}

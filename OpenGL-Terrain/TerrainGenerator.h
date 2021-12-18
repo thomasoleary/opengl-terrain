@@ -28,8 +28,8 @@ public:
 
 private:
 	void Init(int dimension);
-	void GenerateVertices(int dimension);
-	void GenerateIndices(int dimension);
+	void GenerateVertices();
+	void GenerateIndices();
 
 
 	int halfDimension;
