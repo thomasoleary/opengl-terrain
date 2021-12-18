@@ -1,5 +1,23 @@
 #include "TerrainGenerator.h"
 
+const int REGION_SIZE = 7;
+TerrainType regions[REGION_SIZE] =
+{
+	1.8f, glm::vec3(1.0f, 1.0f, 1.0f), // Snow
+
+	1.0f, glm::vec3(0.3f, 0.3f, 0.3f), // Rock
+
+	0.5f, glm::vec3(0.0f, 0.55f, 0.0f), // Grass
+
+	0.1f, glm::vec3(0.76f, 0.69f, 0.5f), // Sand
+
+	-0.2f, glm::vec3(0.0f, 0.5f, 0.75f), // Shallow Water
+
+	-0.4f, glm::vec3(0.0f, 0.25f, 0.75f), // Deep Water
+
+	-0.6f, glm::vec3(0.0f, 0.1f, 0.75f), // Even Deeper Water
+};
+
 TerrainGenerator::~TerrainGenerator()
 {
 	glDisableVertexAttribArray(0);
@@ -11,10 +29,12 @@ TerrainGenerator::~TerrainGenerator()
 	std::cout << "TerrainGenerator Destroyed" << std::endl;
 }
 
-bool TerrainGenerator::Init(int dimension)
+bool TerrainGenerator::Init(int dimension, float gridSpacing, float heightScale)
 {
+	tg_gridSpacing = gridSpacing;
+	noise.n_heightScale = heightScale;
 	terrain.dimension = dimension;
-	halfDimension = terrain.dimension / 2;
+	tg_halfDimension = terrain.dimension / 2;
 
 	terrain.numberOfVertices = terrain.dimension * terrain.dimension;
 	std::cout << "Number of Verts: " << terrain.numberOfVertices << std::endl;
@@ -27,9 +47,9 @@ bool TerrainGenerator::Init(int dimension)
 	return GenerateIndices();
 }
 
-bool TerrainGenerator::Create(int dimension)
+bool TerrainGenerator::Create(int dimension, float gridSpacing, float heightScale)
 {
-	return Init(++dimension);
+	return Init(++dimension, gridSpacing, heightScale);
 }
 
 bool TerrainGenerator::Generate()
@@ -48,11 +68,19 @@ bool TerrainGenerator::GenerateVertices()
 		{
 			Vertex& currentVert = terrain.vertices[i * terrain.dimension + j];
 
-			currentVert.position.x = static_cast<float>((j - halfDimension) * gridSpacing);
+			currentVert.position.x = (j - tg_halfDimension) * tg_gridSpacing;
 			currentVert.position.y = noise.ApplyNoise(i, j);
-			currentVert.position.z = static_cast<float>((i - halfDimension) * gridSpacing);
+			currentVert.position.z = (i - tg_halfDimension) * tg_gridSpacing;
 
-			currentVert.colour = glm::vec3(0.0f, 1.0f, 0.0f);
+			//currentVert.colour = glm::vec3(0.0f, 1.0f, 0.0f);
+
+			for (int i = 0; i < REGION_SIZE; i++)
+			{
+				if (currentVert.position.y <= regions[i].height)
+				{
+					currentVert.colour = regions[i].colour;
+				}
+			}
 			index++;
 		}
 	}

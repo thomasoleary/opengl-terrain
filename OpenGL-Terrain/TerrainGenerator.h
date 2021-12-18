@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Terrain.h"
+#include "TerrainType.h"
 #include "Shader.h"
 #include "Noise.h"
 
@@ -17,13 +18,13 @@ public:
 
 	Terrain terrain = Terrain();
 
-	bool Create(int dimension);
+	bool Create(int dimension, float gridSpacing, float heightScale);
 	bool Generate();
 
 private:
 	Noise noise = Noise();
 
-	bool Init(int dimension);
+	bool Init(int dimension, float gridSpacing, float heightScale);
 	bool GenerateVertices();
 	bool GenerateIndices();
 	bool TerrainManager();
@@ -33,8 +34,8 @@ private:
 	GLuint indexArrayBufferID;
 	GLuint vertexByteSize = sizeof(Vertex);
 
-	int halfDimension;
-	float gridSpacing = 1.0f;
+	int tg_halfDimension;
+	float tg_gridSpacing = 0.15f;
 };
 
 #endif // !TERRAIN_GENERATOR_H

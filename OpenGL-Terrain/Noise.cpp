@@ -3,7 +3,7 @@
 Noise::Noise()
 {
 	currentHeight = 0.0f;
-	heightScale = 3.0f;
+	n_heightScale = 3.0f;
 
 	InitNoise();
 }
@@ -32,5 +32,5 @@ void Noise::InitNoise()
 
 float Noise::ApplyNoise(int i, int j)
 {
-	return fNoise.GetNoise(i * 0.5f, j * 0.5f) * heightScale;
+	return fNoise.GetNoise(i * 0.03f, j * 0.03f) * n_heightScale;
 }

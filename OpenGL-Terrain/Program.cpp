@@ -1,6 +1,8 @@
 #include "Program.h"
 
-const int TERRAIN_SIZE = 50;
+const int TERRAIN_SIZE = 255;
+const float GRID_SPACING = 0.15f;
+const float HEIGHT_SCALE = 3.0f;
 
 Program::Program()
 {
@@ -164,7 +166,7 @@ void Program::CleanUp()
 
 void Program::Create()
 {
-	if (!terrainGenerator.Create(TERRAIN_SIZE))
+	if (!terrainGenerator.Create(TERRAIN_SIZE, GRID_SPACING, HEIGHT_SCALE))
 		throw std::runtime_error("Failed to create terrain.");
 }
 

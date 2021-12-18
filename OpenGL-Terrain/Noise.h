@@ -16,10 +16,10 @@ public:
 	float ApplyNoise(int i, int j);
 
 	void GenerateSeed();
+	float n_heightScale;
 
 private:
 	float currentHeight;
-	int heightScale;
 };
 
 #endif // !NOISE_H
