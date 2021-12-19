@@ -1,0 +1,8 @@
+B:/opengl-terrain/Libraries/freetype-2.11.1/out/build/x64-Debug/CMakeFiles/package.dir
+B:/opengl-terrain/Libraries/freetype-2.11.1/out/build/x64-Debug/CMakeFiles/freetype.dir
+B:/opengl-terrain/Libraries/freetype-2.11.1/out/build/x64-Debug/CMakeFiles/package_source.dir
+B:/opengl-terrain/Libraries/freetype-2.11.1/out/build/x64-Debug/CMakeFiles/install/local.dir
+B:/opengl-terrain/Libraries/freetype-2.11.1/out/build/x64-Debug/CMakeFiles/install.dir
+B:/opengl-terrain/Libraries/freetype-2.11.1/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+B:/opengl-terrain/Libraries/freetype-2.11.1/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
+B:/opengl-terrain/Libraries/freetype-2.11.1/out/build/x64-Debug/CMakeFiles/list_install_components.dir
