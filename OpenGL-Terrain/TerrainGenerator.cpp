@@ -31,9 +31,9 @@ TerrainGenerator::~TerrainGenerator()
 
 bool TerrainGenerator::Init(int dimension, float gridSpacing, float heightScale)
 {
+	terrain.dimension = dimension;
 	tg_gridSpacing = gridSpacing;
 	noise.n_heightScale = heightScale;
-	terrain.dimension = dimension;
 	tg_halfDimension = terrain.dimension / 2;
 
 	terrain.numberOfVertices = terrain.dimension * terrain.dimension;

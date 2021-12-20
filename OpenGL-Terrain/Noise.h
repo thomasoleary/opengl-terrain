@@ -18,6 +18,8 @@ public:
 	void GenerateSeed();
 	float n_heightScale;
 
+	int seed = 0;
+
 private:
 	float currentHeight;
 };

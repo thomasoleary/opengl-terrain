@@ -11,7 +11,7 @@ Noise::Noise()
 void Noise::GenerateSeed()
 {
 	srand(time(NULL));
-	int seed = rand() % 100 + 1;
+	seed = rand() % 100 + 1;
 
 	std::cout << "Seed: " << seed << std::endl;
 	fNoise.SetSeed(seed);

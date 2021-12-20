@@ -28,7 +28,7 @@ class Text
 {
 public:
 	// Class Constructor
-	Text(unsigned int width, unsigned int height);
+	Text(float width, float height);
 
 	// List of pre-compiled characters
 	std::map<char, Character> characters;
@@ -42,6 +42,7 @@ public:
 	GLuint textProgramID;
 	GLuint projectionUInt;
 	GLuint colourLocation;
+	GLuint textLocation;
 	glm::mat4 projection;
 
 private:

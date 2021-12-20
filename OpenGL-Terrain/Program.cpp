@@ -61,9 +61,16 @@ void Program::Start()
 	if (!(programID = LoadShaders("VertexShader.glsl", "FragmentShader.glsl")))
 		throw std::runtime_error("Failed to load shaders");
 	
-	Create();
+	text = new Text(windowRes.x, windowRes.y);
+	
+	text->Load("Fonts/Roboto-Medium.ttf", 24);
 
+	Create();
 	Generate();
+
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 
 	running = true;
@@ -106,7 +113,6 @@ void Program::InputChecks()
 				break;
 			case SDLK_SPACE:
 				Generate();
-				//std::cout << "Space bar" << std::endl;
 				break;
 			}
 
@@ -135,16 +141,19 @@ void Program::InputChecks()
 
 void Program::Render()
 {
-	glEnable(GL_DEPTH_TEST);
-
 	glViewport(0, 0, (int)windowRes.x, (int)windowRes.y);
 	glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
 	glUseProgram(programID);
-
 	camera.Update(programID);
+
+	std::stringstream ss;
+	ss << this->terrainGenerator.noise.seed;
+	text->Render("Seed: " + ss.str(), 5.0f, 5.0f, 1.0f);
+	//text->Render("Test Text render", 25.0f, 25.0f, 1.0f);
+	
+	//glutSwapBuffers();
 	
 	glDrawElements(GL_TRIANGLES, terrainGenerator.terrain.numberOfIndices, GL_UNSIGNED_SHORT, (void*)0);
 

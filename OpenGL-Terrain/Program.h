@@ -17,6 +17,7 @@
 
 #include "Camera.h"
 #include "TerrainGenerator.h"
+#include "Text.h"
 #include "Shader.h"
 
 #pragma once
@@ -29,6 +30,7 @@ public:
 
 	Camera camera;
 	TerrainGenerator terrainGenerator;
+	Text* text;
 
 	void Update();
 	

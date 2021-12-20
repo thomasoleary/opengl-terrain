@@ -17,12 +17,12 @@ public:
 	~TerrainGenerator();
 
 	Terrain terrain = Terrain();
+	Noise noise = Noise();
 
 	bool Create(int dimension, float gridSpacing, float heightScale);
 	bool Generate();
 
 private:
-	Noise noise = Noise();
 
 	bool Init(int dimension, float gridSpacing, float heightScale);
 	bool GenerateVertices();

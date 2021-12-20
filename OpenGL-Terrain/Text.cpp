@@ -1,41 +1,46 @@
 #include "Text.h"
 
-Text::Text(unsigned int width, unsigned int height)
+Text::Text(float width, float height)
 {
-	textProgramID = LoadShaders("TextVertex.glsl", "TextFragment.glsl");
-	projection = glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f);
+	if(!(textProgramID = LoadShaders("TextVertex.glsl", "TextFragment.glsl")))
+		throw std::runtime_error("Failed to load Text Shaders");
+
+	projection = glm::ortho(0.0f, width, 0.0f, height);
+	glUseProgram(textProgramID);
 
 	projectionUInt = glGetUniformLocation(textProgramID, "projection");
-	colourLocation = glGetUniformLocation(textProgramID, "textColor");
 	glUniformMatrix4fv(projectionUInt, 1, GL_FALSE, glm::value_ptr(projection));
+	
+	textLocation = glGetUniformLocation(textProgramID, "text");
+	glUniform1i(textProgramID, 0);
+	
+	colourLocation = glGetUniformLocation(textProgramID, "textColor");
 
-	glGenVertexArrays(1, &this->VAO);
-	glGenBuffers(1, &this->VBO);
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
 
-	glBindVertexArray(this->VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
 
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-
 }
 
 void Text::Load(std::string font, unsigned int fontSize)
 {
-	this->characters.clear();
+	characters.clear();
 
 	FT_Library ft;
 	if (FT_Init_FreeType(&ft))
-		std::cout << "ERROR: FREETYPE: Could not init FreeType Library" << std::endl;
+		throw std::runtime_error("ERROR: FREETYPE: Could not init FreeType Library");
 
 	FT_Face face;
 	if (FT_New_Face(ft, font.c_str(), 0, &face))
-		std::cout << "ERROR: FREETYPE: Failed to load font" << std::endl;
+		throw std::runtime_error("ERROR: FREETYPE: Failed to load font");
 
 	FT_Set_Pixel_Sizes(face, 0, fontSize);
 
@@ -45,7 +50,7 @@ void Text::Load(std::string font, unsigned int fontSize)
 	{
 		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
 		{
-			std::cout << "ERROR: FREETYPE: Failed to load Glyph" << std::endl;
+			throw std::runtime_error("ERROR: FREETYPE: Failed to load Glyph");
 			continue;
 		}
 
@@ -87,11 +92,10 @@ void Text::Render(std::string text, float x, float y, float scale, glm::vec3 col
 {
 	glUseProgram(textProgramID);
 
-	//colourLocation = glGetUniformLocation(textProgramID, "textColor");
 	glUniform3f(colourLocation, colour.x, colour.y, colour.z);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindVertexArray(this->VAO);
+	glBindVertexArray(VAO);
 
 	std::string::const_iterator c;
 	for (c = text.begin(); c != text.end(); c++)
@@ -99,7 +103,7 @@ void Text::Render(std::string text, float x, float y, float scale, glm::vec3 col
 		Character ch = characters[*c];
 
 		float xpos = x + ch.bearing.x * scale;
-		float ypos = y + (this->characters['H'].bearing.y - ch.bearing.y) * scale;
+		float ypos = y + (characters['H'].bearing.y - ch.bearing.y) * scale;
 
 		float w = ch.size.x * scale;
 		float h = ch.size.y * scale;
@@ -116,7 +120,7 @@ void Text::Render(std::string text, float x, float y, float scale, glm::vec3 col
 
 		glBindTexture(GL_TEXTURE_2D, ch.textureID);
 
-		glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
