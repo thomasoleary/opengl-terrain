@@ -29,6 +29,7 @@ class Text
 public:
 	// Class Constructor
 	Text(float width, float height);
+	~Text();
 
 	// List of pre-compiled characters
 	std::map<char, Character> characters;

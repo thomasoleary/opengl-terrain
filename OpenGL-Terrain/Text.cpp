@@ -30,6 +30,18 @@ Text::Text(float width, float height)
 	glBindVertexArray(0);
 }
 
+Text::~Text()
+{
+	glDisableVertexAttribArray(2);
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+
+	glUseProgram(0);
+	glDeleteProgram(textProgramID);
+
+	std::cout << "Text Destroyed" << std::endl;
+}
+
 void Text::Load(std::string font, unsigned int fontSize)
 {
 	characters.clear();
@@ -86,6 +98,8 @@ void Text::Load(std::string font, unsigned int fontSize)
 
 	FT_Done_Face(face);
 	FT_Done_FreeType(ft);
+
+	std::cout << "Text Loaded\n" << std::endl;
 }
 
 void Text::Render(std::string text, float x, float y, float scale, glm::vec3 colour)
