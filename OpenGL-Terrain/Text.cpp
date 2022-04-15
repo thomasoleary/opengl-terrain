@@ -2,10 +2,10 @@
 
 Text::Text(float width, float height)
 {
-	if(!(textProgramID = LoadShaders("TextVertex.glsl", "TextFragment.glsl")))
+	/*if(!(textProgramID = LoadShaders("TextVertex.glsl", "TextFragment.glsl")))
 		throw std::runtime_error("Failed to load Text Shaders");
 
-	projection = glm::ortho(0.0f, width, 0.0f, height);
+	
 	glUseProgram(textProgramID);
 
 	projectionUInt = glGetUniformLocation(textProgramID, "projection");
@@ -14,7 +14,11 @@ Text::Text(float width, float height)
 	textLocation = glGetUniformLocation(textProgramID, "text");
 	glUniform1i(textProgramID, 0);
 	
-	colourLocation = glGetUniformLocation(textProgramID, "textColor");
+	colourLocation = glGetUniformLocation(textProgramID, "textColor");*/
+	projection = glm::ortho(0.0f, width, height, 0.0f);
+	this->TextShader = ShaderManager::LoadShader("TextVertex.glsl", "TextFragment.glsl", "text");
+	this->TextShader.SetMatrix4("projection", projection, true);
+	this->TextShader.SetInteger("text", 0);
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -35,9 +39,6 @@ Text::~Text()
 	glDisableVertexAttribArray(2);
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-
-	glUseProgram(0);
-	glDeleteProgram(textProgramID);
 
 	std::cout << "Text Destroyed" << std::endl;
 }
@@ -99,14 +100,13 @@ void Text::Load(std::string font, unsigned int fontSize)
 	FT_Done_Face(face);
 	FT_Done_FreeType(ft);
 
-	std::cout << "Text Loaded\n" << std::endl;
+	//std::cout << "Text Loaded\n" << std::endl;
 }
 
 void Text::Render(std::string text, float x, float y, float scale, glm::vec3 colour)
 {
-	glUseProgram(textProgramID);
-
-	glUniform3f(colourLocation, colour.x, colour.y, colour.z);
+	this->TextShader.Use();
+	this->TextShader.SetVector3f("textColor", colour);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(VAO);

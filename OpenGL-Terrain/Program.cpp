@@ -17,6 +17,7 @@ void Program::Init()
 {
 	InitWindow();
 	InitGLEW();
+	InitText();
 
 	Start();
 	
@@ -55,15 +56,19 @@ void Program::InitGLEW()
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "GLEW Failed to Initialise", SDL_GetError(), NULL);
 	}
 }
+void Program::InitText()
+{
+	text = new Text(windowRes.x, windowRes.y);
+	moreText = new Text(windowRes.x, windowRes.y);
+
+	text->Load("Fonts/Roboto-Medium.ttf", 24);
+	moreText->Load("Fonts/Roboto-Medium.ttf", 24);
+}
 
 void Program::Start()
 {
 	if (!(programID = LoadShaders("VertexShader.glsl", "FragmentShader.glsl")))
 		throw std::runtime_error("Failed to load shaders");
-	
-	text = new Text(windowRes.x, windowRes.y);
-	
-	text->Load("Fonts/Roboto-Medium.ttf", 24);
 
 	Create();
 	Generate();
@@ -141,19 +146,31 @@ void Program::InputChecks()
 
 void Program::Render()
 {
+	RenderFrame();
+	//RenderText();
+
+	glDrawElements(GL_TRIANGLES, terrainGenerator.terrain.numberOfIndices, GL_UNSIGNED_SHORT, (void*)0);
+	SDL_GL_SwapWindow(window);
+}
+
+void Program::RenderFrame()
+{
 	glViewport(0, 0, (int)windowRes.x, (int)windowRes.y);
 	glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	std::stringstream ss;
-	ss << this->terrainGenerator.noise.seed;
-	//text->Render("Seed: " + ss.str(), 5.0f, 5.0f, 1.0f);
 
 	glUseProgram(programID);
 	camera.Update(programID);
-	
-	glDrawElements(GL_TRIANGLES, terrainGenerator.terrain.numberOfIndices, GL_UNSIGNED_SHORT, (void*)0);
 
-	SDL_GL_SwapWindow(window);
+}
+
+void Program::RenderText()
+{
+	std::stringstream ss;
+	ss << this->terrainGenerator.noise.seed;
+	text->Render("Seed: " + ss.str(), 5.0f, 5.0f, 1.0f);
+
+	//ss = std::stringstream();
 }
 
 void Program::CleanUp()

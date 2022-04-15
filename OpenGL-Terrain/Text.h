@@ -12,7 +12,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include "Shader.h"
+#include "ShaderManager.h"
 
 // Holds all information relvent to a character
 struct Character
@@ -34,16 +34,14 @@ public:
 	// List of pre-compiled characters
 	std::map<char, Character> characters;
 
+	Shader TextShader;
+
 	// Pre-compiles the list of characters from a given font
 	void Load(std::string font, unsigned int fontSize);
 
 	// Renders a string of text using the pre-compiled list
 	void Render(std::string text, float x, float y, float scale, glm::vec3 colour = glm::vec3(1.0f));
 
-	GLuint textProgramID;
-	GLuint projectionUInt;
-	GLuint colourLocation;
-	GLuint textLocation;
 	glm::mat4 projection;
 
 private:

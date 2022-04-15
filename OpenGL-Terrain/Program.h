@@ -31,6 +31,7 @@ public:
 	Camera camera;
 	TerrainGenerator terrainGenerator;
 	Text* text;
+	Text* moreText;
 
 	void Update();
 	
@@ -39,6 +40,7 @@ private:
 	void Init();
 	void InitWindow();
 	void InitGLEW();
+	void InitText();
 
 	void Start();
 	void Create();
@@ -46,6 +48,8 @@ private:
 
 	void InputChecks();
 	void Render();
+	void RenderFrame();
+	void RenderText();
 	void CleanUp();
 
 	void WireFrameMode();
