@@ -1,2 +1,4 @@
-# opengl-terrain
-Private repo where I'm working on my OpenGL terrain generator from COMP220.
+# OpenGL Terrain Generator
+A small personal project of mine.
+
+TODO: Update README in more depth
